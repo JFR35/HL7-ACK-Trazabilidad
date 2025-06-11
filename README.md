@@ -27,16 +27,15 @@ Esta solución simula la **interacción bidireccional entre sistemas hospitalari
 
 - 🗄️ **Auditoría y Almacenamiento**
   - Persistencia de cada mensaje HL7 recibido.
-  - Estado (`AA`, `AE`, `AR`), timestamp y detalle de errores si existen.
-  - Base de datos relacional (ej. PostgreSQL o MySQL).
+  - Estado (`AA`, `AE`, `AR`), timestamp y detalle de errores si existen para una mayor auditoría.
+  - Base de datos relacional en este caso H2 en memoria para desarrollo ágil del MVP.
 
 ---
 
 ## Componentes Técnicos
 
 - **Spring Boot** (API REST, configuración, beans)
-- **Netty/TCP Server** o integración con librerías MLLP específicas
-- **Base de Datos**: JPA/Hibernate + PostgreSQL/MySQL
+- **Base de Datos**: JPA/Hibernate + H2 en memoria.
 - **Parser HL7**: `HAPI HL7 v2` para análisis y construcción de mensajes HL7
 - **Servicio ACK Builder**: Generador de ACK dinámico
 - **Auditoría**: Entity Auditor + Logging persistente
@@ -59,7 +58,7 @@ Esta solución simula la **interacción bidireccional entre sistemas hospitalari
 - ✅ Asegura la **trazabilidad completa** de los mensajes clínicos.
 - ✅ Compatible con **sistemas legados** basados en HL7v2.
 - ✅ Fácil integración con **plataformas de interoperabilidad** como Mirth Connect.
-- ✅ Base para construir **flujos más complejos** (ej. transformación a FHIR, enrutamiento, etc.)
+- ✅ Base para construir **flujos más complejos** (transformación a FHIR, enrutamiento, etc.)
 
 ---
 
