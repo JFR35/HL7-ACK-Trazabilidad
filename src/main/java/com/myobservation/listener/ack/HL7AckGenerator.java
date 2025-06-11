@@ -1,14 +1,21 @@
 package com.myobservation.listener.ack;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 
+import static com.myobservation.listener.utils.ProtocolConstants.CARRIAGE_RETURN;
+import static com.myobservation.listener.utils.ProtocolConstants.TIMESTAMP_FORMAT;
+
+@Component
 public class HL7AckGenerator {
 
 
-    private String buildAckMessage(String hl7Message) {
+
+    public String buildAckMessage(String hl7Message) {
         try {
             String[] segments = hl7Message.split("\\r");
-            String mshSegment = segments[0]; // Asumimos que MSH es el primer segmento
+            String mshSegment = segments[0]; // MSH es el primer segmento siempre
 
             String[] mshFields = mshSegment.split("\\|");
             if (mshFields.length < 12) {
