@@ -22,6 +22,24 @@ public class HL7MessageController {
         this.parserService = parserService;
     }
 
+    // Mensaje de prueba
+    @PostMapping("/test")
+    public HL7Message testSave() {
+        HL7Message testMessage = new HL7Message();
+        testMessage.setMessageRaw("Test message");
+        testMessage.setSender("TEST");
+        testMessage.setReceiver("TEST");
+        testMessage.setMessageType("TEST");
+        testMessage.setAckStatus("AA");
+
+        return repository.save(testMessage);
+    }
+
+    @GetMapping("/failed")
+    public List<HL7Message> getFailedMessages() {
+        return repository.findByAckStatusIn(List.of("AE", "AR"));
+    }
+
     @Transactional
     @PostMapping
     public HL7MessageDTO saveMessage(@RequestBody String hl7Raw) {
