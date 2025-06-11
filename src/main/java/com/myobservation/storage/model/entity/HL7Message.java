@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "HL7_MESSAGE")
 public class HL7Message {
 
     @Id
@@ -23,9 +24,9 @@ public class HL7Message {
 
     private String messageType;
 
-    private String ackStatus;
+    private String ackStatus; // AA,AE,AR
 
-    private String ackError;
+    private String ackError;  // Descripción de error en caso de fallo
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
