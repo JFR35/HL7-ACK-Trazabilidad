@@ -6,6 +6,8 @@ public class HL7MessageDTO {
     private String sender;
     private String receiver;
     private String messageType;
+    private String ackStatus;
+    private String ackError;
 
     public String getMessage() {
         return message;
@@ -37,5 +39,21 @@ public class HL7MessageDTO {
 
     public void setMessageType(String messageType) {
         this.messageType = messageType;
+    }
+
+    public String getAckStatus() {
+        return ackStatus;
+    }
+
+    public void setAckStatus(String ackStatus) {
+        this.ackStatus = ackStatus;
+    }
+
+    public String getAckError() {
+        return ackError;
+    }
+
+    public void setAckError(String ackError) {
+        this.ackError = ackError;
     }
 }
