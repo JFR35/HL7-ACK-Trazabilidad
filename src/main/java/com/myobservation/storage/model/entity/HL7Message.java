@@ -23,6 +23,10 @@ public class HL7Message {
 
     private String messageType;
 
+    private String ackStatus;
+
+    private String ackError;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public long getId() {
@@ -75,5 +79,25 @@ public class HL7Message {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getAckStatus() {
+        return ackStatus;
+    }
+
+    public void setAckStatus(String ackStatus) {
+        this.ackStatus = ackStatus;
+    }
+
+    public String getAckError() {
+        return ackError;
+    }
+
+    public void setAckError(String ackError) {
+        this.ackError = ackError;
     }
 }

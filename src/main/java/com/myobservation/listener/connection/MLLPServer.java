@@ -1,5 +1,7 @@
-package com.myobservation.listener;
+package com.myobservation.listener.connection;
 
+import com.myobservation.listener.ack.HL7AckGenerator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -8,30 +10,46 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static com.myobservation.listener.utils.ProtocolConstants.*;
+
 
 /**
  * Es la clase principal y orquestadora
- * Su responsabilidad es la gestión del ciclo de vida del servidor MLLP (iniciar, parar)
+ * Su responsabilidad es la gestión del ciclo de vida del servidor MLLP (iniciar, parar) y
  * la aperta del ServerSocket y aceptación de nuevas conexiones
  */
 @Component
 public class MLLPServer implements CommandLineRunner {
 
-    private static final char START_BLOCK = 0x0B;
-    private static final char END_BLOCK = 0x1C;
-    private static final char CARRIAGE_RETURN = 0x0D;
-    private static final int PORT = 6661;
-    private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Maneja hasta 10 conexiones
 
+
+    private final HL7AckGenerator hl7AckGenerator;
+
+    // Llave del puerto en properties
+    @Value("${mllp.server.port}")
+    private int mllPort;
+
+    public MLLPServer(HL7AckGenerator hl7AckGenerator) {
+        this.hl7AckGenerator = hl7AckGenerator;
+    }
+
+    /**
+     * Mejora la gestión de hilos y permite manejar mútiples clientes sin saturar la CPU
+     * @param args
+     * @throws Exception
+     */
     @Override
     public void run(String... args) throws Exception {
-        new Thread(() -> startServer()).start();
+        executorService.submit(this::startServer); // Enviar la tarea al pool
     }
 
     private void startServer() {
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("⚡ [SERVER START] Servidor MLLP iniciado en puerto: " + PORT + " - " + LocalDateTime.now());
+        try (ServerSocket serverSocket = new ServerSocket(mllPort)) {
+            System.out.println("⚡ [SERVER START] Servidor MLLP iniciado en puerto: " + mllPort + " - " + LocalDateTime.now());
 
             while (true) {
                 try {
@@ -87,7 +105,7 @@ public class MLLPServer implements CommandLineRunner {
             System.out.println("📨 [MESSAGE RECEIVED] Mensaje HL7 recibido:\n" + hl7Message);
 
             // Procesar y responder ACK
-            String ackMessage = buildAckMessage(hl7Message);
+            String ackMessage = hl7AckGenerator.buildAckMessage(hl7Message);
             System.out.println("📤 [SENDING ACK] Preparando ACK:\n" + ackMessage);
 
             // Enviar ACK con encapsulamiento MLLP
@@ -109,48 +127,6 @@ public class MLLPServer implements CommandLineRunner {
             } catch (IOException e) {
                 System.err.println("⚠️ [WARNING] Error al cerrar la conexión: " + e.getMessage());
             }
-        }
-    }
-
-    private String buildAckMessage(String hl7Message) {
-        try {
-            String[] segments = hl7Message.split("\\r");
-            String mshSegment = segments[0]; // Asumimos que MSH es el primer segmento
-
-            String[] mshFields = mshSegment.split("\\|");
-            if (mshFields.length < 12) {
-                throw new IllegalArgumentException("MSH segmento no válido");
-            }
-
-            // Construir MSH para el ACK
-            String timestamp = LocalDateTime.now().format(TIMESTAMP_FORMAT);
-            StringBuilder ackBuilder = new StringBuilder();
-
-            // Segmento MSH del ACK
-            ackBuilder.append("MSH|^~\\&|")
-                    .append(mshFields[4]).append("|")  // Receiving Application
-                    .append(mshFields[5]).append("|")  // Receiving Facility
-                    .append(mshFields[2]).append("|")  // Sending Application
-                    .append(mshFields[3]).append("|")  // Sending Facility
-                    .append(timestamp).append("|")      // Fecha/Hora del ACK
-                    .append("|ACK^A01|")               // Tipo de mensaje
-                    .append(mshFields[9]).append("|")  // ID del mensaje original
-                    .append("P|2.5").append(CARRIAGE_RETURN);
-
-            // Segmento MSA
-            ackBuilder.append("MSA|AA|")                 // AA = Aceptación, AE = Error, AR = Rechazo
-                    .append(mshFields[9])              // ID del mensaje original
-                    .append(CARRIAGE_RETURN);
-
-            return ackBuilder.toString();
-
-        } catch (Exception e) {
-            System.err.println("⚠️ [WARNING] Error al construir ACK: " + e.getMessage());
-
-            // ACK genérico en caso de error
-            return "MSH|^~\\&|ACK_SERVER|||" + LocalDateTime.now().format(TIMESTAMP_FORMAT) +
-                    "||ACK^A01||P|2.5" + CARRIAGE_RETURN +
-                    "MSA|AE||Error procesando mensaje" + CARRIAGE_RETURN;
         }
     }
 }
