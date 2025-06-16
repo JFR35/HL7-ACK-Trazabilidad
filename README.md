@@ -6,6 +6,8 @@ Implementación de un **servicio de integración robusto en Spring Boot** para l
 
 Esta solución simula la **interacción bidireccional entre sistemas hospitalarios**, como pueden ser HIS, LIS o motores de integración como **Mirth Connect**.
 
+Se realiza auditoria y trazabilidad con PL/SQL en Oracle a través de procedimientos almacenados, vistas, funciones y triggers.
+
 ---
 
 ## Funcionalidades Principales
@@ -25,7 +27,7 @@ Esta solución simula la **interacción bidireccional entre sistemas hospitalari
   - Respuesta estándar HL7 ACK al sistema origen.
   - Contenido refleja el resultado del procesamiento.
 
-- 🗄️ **Auditoría y Almacenamiento**
+- 🗄️ **Auditoría y Almacenamiento en PL/SQL**
   - Persistencia de cada mensaje HL7 recibido.
   - Estado (`AA`, `AE`, `AR`), timestamp y detalle de errores si existen para una mayor auditoría.
   - Base de datos relacional en este caso H2 en memoria para desarrollo ágil del MVP.
@@ -35,7 +37,7 @@ Esta solución simula la **interacción bidireccional entre sistemas hospitalari
 ## Componentes Técnicos
 
 - **Spring Boot** (API REST, configuración, beans)
-- **Base de Datos**: JPA/Hibernate + H2 en memoria.
+- **Base de Datos**: JPA/Hibernate + Oracle para PL/SQL.
 - **Parser HL7**: `HAPI HL7 v2` para análisis y construcción de mensajes HL7
 - **Servicio ACK Builder**: Generador de ACK dinámico
 - **Auditoría**: Entity Auditor + Logging persistente
