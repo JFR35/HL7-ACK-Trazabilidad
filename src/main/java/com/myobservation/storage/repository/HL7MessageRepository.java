@@ -8,5 +8,10 @@ import java.util.List;
 
 @Repository
 public interface HL7MessageRepository extends JpaRepository<HL7Message, Long> {
+    /**
+     * Buscar por el código de estado ACK
+     * @param ackStatus AA AE AR
+     * @return código de estado
+     */
     List<HL7Message> findByAckStatusIn(List<String> ackStatus);
 }
