@@ -30,7 +30,7 @@ Se realiza auditoria y trazabilidad con PL/SQL en Oracle a través de procedimie
 - 🗄️ **Auditoría y Almacenamiento en PL/SQL**
   - Persistencia de cada mensaje HL7 recibido.
   - Estado (`AA`, `AE`, `AR`), timestamp y detalle de errores si existen para una mayor auditoría.
-  - Base de datos relacional en este caso H2 en memoria para desarrollo ágil del MVP.
+  - Base de datos relacional Oracle donde se crean procedimientos, triggers y vistas.
 
 ---
 
