@@ -4,7 +4,7 @@ Implementación de un servicio de integración clínico robusto en Spring Boot, 
 
 La solución simula la interacción bidireccional entre sistemas hospitalarios (HIS, LIS, RIS, etc.) o motores de integración como Mirth Connect, cubriendo tanto la recepción como la trazabilidad completa de los mensajes clínicos.
 
-Se complementa con una capa de auditoría y trazabilidad implementada en Oracle mediante PL/SQL, utilizando procedimientos almacenados, funciones, vistas y triggers.
+** Se complementa con una capa de auditoría y trazabilidad implementada en Oracle mediante PL/SQL, utilizando procedimientos almacenados, funciones, vistas y triggers.**
 ---
 ## Diagrama de Componentes de la solución
 ![image](https://github.com/user-attachments/assets/37c9a6df-cc96-42d4-92e2-5524bf744bbb)
