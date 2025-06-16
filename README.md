@@ -1,4 +1,4 @@
-🏥 Descripción General
+🏥 ##Descripción General
 Implementación de un servicio de integración clínico robusto en Spring Boot, orientado a la recepción, validación, procesamiento y auditoría de mensajes en formato HL7 v2.x utilizando el protocolo MLLP (Minimum Lower Layer Protocol).
 
 La solución simula la interacción bidireccional entre sistemas hospitalarios (HIS, LIS, RIS, etc.) o motores de integración como Mirth Connect, cubriendo tanto la recepción como la trazabilidad completa de los mensajes clínicos.
