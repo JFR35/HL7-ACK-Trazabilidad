@@ -1,26 +1,27 @@
-🏥 ##Descripción General
+## Descripción General
+
 Implementación de un servicio de integración clínico robusto en Spring Boot, orientado a la recepción, validación, procesamiento y auditoría de mensajes en formato HL7 v2.x utilizando el protocolo MLLP (Minimum Lower Layer Protocol).
 
 La solución simula la interacción bidireccional entre sistemas hospitalarios (HIS, LIS, RIS, etc.) o motores de integración como Mirth Connect, cubriendo tanto la recepción como la trazabilidad completa de los mensajes clínicos.
 
 Se complementa con una capa de auditoría y trazabilidad implementada en Oracle mediante PL/SQL, utilizando procedimientos almacenados, funciones, vistas y triggers.
+---
 
-🧩 Funcionalidades Principales
-📥 Recepción de Mensajes HL7v2
-Escucha activa en un puerto TCP con protocolo MLLP.
+## Funcionalidades Principales
+- Recepción de Mensajes HL7v2
+- Escucha activa en un puerto TCP con protocolo MLLP.
+- Compatible con múltiples tipos de mensajes: ADT, ORM, ORU, entre otros.
 
-Compatible con múltiples tipos de mensajes: ADT, ORM, ORU, entre otros.
-
-⚙️ Procesamiento del Mensaje
+## Procesamiento del Mensaje
 Validación estructural básica de los segmentos y campos del mensaje HL7v2.
 
 Aplicación de reglas de negocio para determinar el estado del mensaje:
 
-AA (Application Accept): Procesamiento exitoso.
+- AA (Application Accept): Procesamiento exitoso.
 
-AE (Application Error): Error durante el procesamiento.
+- AE (Application Error): Error durante el procesamiento.
 
-AR (Application Reject): Mensaje rechazado.
+- AR (Application Reject): Mensaje rechazado.
 
 📤 Generación de Mensaje ACK
 Respuesta ACK estándar enviada al sistema origen.
