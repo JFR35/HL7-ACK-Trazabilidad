@@ -8,19 +8,17 @@ import static com.myobservation.listener.utils.ProtocolConstants.CARRIAGE_RETURN
 import static com.myobservation.listener.utils.ProtocolConstants.TIMESTAMP_FORMAT;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; // Importa el Logger
+import org.slf4j.LoggerFactory;
 
-@Component // O @Service
+@Component
 public class HL7AckGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(HL7AckGenerator.class);
 
-    // Este es el método que necesitas. Asegúrate de que solo este exista o que
-    // el otro (sin parámetros) no sea llamado por tu MLLPConnectionHandler.
     public String buildAckMessage(String hl7Message, String ackStatus, String ackErrorDetail) {
         try {
             String[] segments = hl7Message.split("\\r");
-            // Asegúrate de que el mensaje no esté vacío o sea muy corto antes de intentar parsear MSH
+            // Asegura que el mensaje no esté vacío o sea muy corto antes de intentar parsear MSH
             if (segments.length == 0 || !segments[0].startsWith("MSH")) {
                 logger.warn("[WARNING] Mensaje HL7 recibido sin segmento MSH inicial. Generando ACK de error.");
                 // Fallback a un ACK de error si el mensaje es completamente irreconocible
@@ -66,7 +64,7 @@ public class HL7AckGenerator {
             return ackBuilder.toString();
 
         } catch (Exception e) {
-            logger.error("❌ [ACK GENERATOR FATAL ERROR] Error crítico al construir ACK: {}", e.getMessage(), e);
+            logger.error("[ACK GENERATOR FATAL ERROR] Error crítico al construir ACK: {}", e.getMessage(), e);
             // ACK genérico de error si falló la construcción del ACK mismo
             return "MSH|^~\\&|ACK_SERVER|||" + LocalDateTime.now().format(TIMESTAMP_FORMAT) +
                     "||ACK^A01||P|2.5" + CARRIAGE_RETURN +

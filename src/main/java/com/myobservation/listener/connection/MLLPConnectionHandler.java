@@ -8,12 +8,11 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import com.myobservation.listener.ack.HL7AckGenerator;
-import com.myobservation.storage.service.parser.HL7ParserService; // <-- Importa el servicio de parser
 import com.myobservation.storage.model.dto.HL7MessageDTO; // <-- Si quieres usar el DTO de retorno
-import org.springframework.stereotype.Component;
 
 import static com.myobservation.listener.utils.ProtocolConstants.*;
 
+import com.myobservation.storage.service.HL7ParserService;
 import org.slf4j.Logger; // Importa Logger
 import org.slf4j.LoggerFactory; // Importa LoggerFactory
 

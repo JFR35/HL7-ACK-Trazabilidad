@@ -1,7 +1,7 @@
 package com.myobservation.listener.connection;
 
 import com.myobservation.listener.ack.HL7AckGenerator;
-import com.myobservation.storage.service.parser.HL7ParserService; // <-- Importa el servicio de parser
+import com.myobservation.storage.service.HL7ParserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 // Importa las constantes de tu clase ProtocolConstants
-import static com.myobservation.listener.utils.ProtocolConstants.*;
+
 
 /**
  * Es la clase principal y orquestadora
@@ -54,25 +54,22 @@ public class MLLPServer implements CommandLineRunner {
 
             while (true) {
                 try {
-                    logger.info("🔄 [LISTENING] Esperando conexiones...");
+                    logger.info("[LISTENING] Esperando conexiones...");
                     Socket socket = serverSocket.accept();
-                    logger.info("🔗 [CONNECTION] Nueva conexión desde: {}:{}", socket.getInetAddress(), socket.getPort());
+                    logger.info("[CONNECTION] Nueva conexión desde: {}:{}", socket.getInetAddress(), socket.getPort());
 
-                    // Crea un nuevo MLLPConnectionHandler y lo ejecuta en el pool de hilos
-                    // Pasa las dependencias (ackGenerator, parserService) al handler
+                    // Crear un nuevo MLLPConnectionHandler y lo ejecuta en el pool de hilos
+                    // Pasar las dependencias (ackGenerator, parserService) al handler
                     executorService.submit(new MLLPConnectionHandler(socket, hl7AckGenerator, hl7ParserService));
 
                 } catch (Exception e) {
-                    logger.error("❌ [SERVER ERROR] Error en el servidor: {}", e.getMessage(), e);
+                    logger.error("[SERVER ERROR] Error en el servidor: {}", e.getMessage(), e);
                     // No es necesario e.printStackTrace(); si usas logger.error con el Throwable
                 }
             }
         } catch (Exception e) {
-            logger.error("❌ [SERVER FATAL] No se pudo iniciar el servidor: {}", e.getMessage(), e);
+            logger.error("[SERVER FATAL] No se pudo iniciar el servidor: {}", e.getMessage(), e);
             // No es necesario e.printStackTrace();
         }
     }
-
-    // El método handleClientConnection() se ha eliminado de aquí,
-    // ya que su lógica ahora está en MLLPConnectionHandler.
 }

@@ -1,7 +1,11 @@
 package com.myobservation.storage.model.dto;
 
+/**
+ * Clase DTO para definir las entidades de la bbdd como objetos en JAVA POJOs
+ */
 public class HL7MessageDTO {
 
+    // Atributos
     private String message;
     private String sender;
     private String receiver;
@@ -9,6 +13,7 @@ public class HL7MessageDTO {
     private String ackStatus;
     private String ackError;
 
+    // GETTER & SETTER
     public String getMessage() {
         return message;
     }
