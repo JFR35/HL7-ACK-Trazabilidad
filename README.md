@@ -6,6 +6,10 @@ La solución simula la interacción bidireccional entre sistemas hospitalarios (
 
 Se complementa con una capa de auditoría y trazabilidad implementada en Oracle mediante PL/SQL, utilizando procedimientos almacenados, funciones, vistas y triggers.
 ---
+## Diagrama de Componentes de la solución
+![image](https://github.com/user-attachments/assets/37c9a6df-cc96-42d4-92e2-5524bf744bbb)
+
+---
 
 ## Funcionalidades Principales
 - Recepción de Mensajes HL7v2
