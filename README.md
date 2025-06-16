@@ -22,37 +22,38 @@ Aplicación de reglas de negocio para determinar el estado del mensaje:
 - AE (Application Error): Error durante el procesamiento.
 
 - AR (Application Reject): Mensaje rechazado.
+--- 
 
-📤 Generación de Mensaje ACK
+## Generación de Mensaje ACK
 Respuesta ACK estándar enviada al sistema origen.
 
 El contenido del ACK refleja el resultado del procesamiento del mensaje recibido.
 
-🗄️ Auditoría y Persistencia (PL/SQL + Oracle)
+## Auditoría y Persistencia (PL/SQL + Oracle)
+
 Almacenamiento de cada mensaje HL7 recibido con trazabilidad completa.
 
 Registro de:
 
-Contenido bruto (messageRaw),
+- Contenido bruto (messageRaw),
 
-Origen (sender), destino (receiver),
+- Origen (sender), destino (receiver),
 
-Tipo de mensaje (messageType),
+- Tipo de mensaje (messageType),
 
-Estado (ackStatus: AA, AE, AR),
+- Estado (ackStatus: AA, AE, AR),
 
-Errores (ackError) si existen.
+- Errores (ackError) si existen.
 
-Implementación de triggers, vistas y procedimientos almacenados para:
+- Implementación de triggers, vistas y procedimientos almacenados para:
 
-Registro automático de errores en tabla de log (hl7_error_log).
+- Registro automático de errores en tabla de log (hl7_error_log).
 
-Generación de vistas para monitoreo en tiempo real.
+- Generación de vistas para monitoreo en tiempo real.
 
-Posibilidad de extracción y análisis de datos vía funciones PL/SQL.
+- Posibilidad de extracción y análisis de datos vía funciones PL/SQL.
 
-Base de datos Oracle para entornos reales, y H2 en memoria para pruebas locales y desarrollo ágil (MVP).
-
+**Base de datos Oracle para entornos reales, y H2 en memoria para pruebas locales y desarrollo ágil (MVP).**
 
 
 ---
