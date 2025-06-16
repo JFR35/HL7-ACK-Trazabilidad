@@ -1,36 +1,58 @@
-# Gestión y Auditoría de Mensajes Clínicos HL7v2 (MLLP)
+🏥 Descripción General
+Implementación de un servicio de integración clínico robusto en Spring Boot, orientado a la recepción, validación, procesamiento y auditoría de mensajes en formato HL7 v2.x utilizando el protocolo MLLP (Minimum Lower Layer Protocol).
 
-## Descripción General
+La solución simula la interacción bidireccional entre sistemas hospitalarios (HIS, LIS, RIS, etc.) o motores de integración como Mirth Connect, cubriendo tanto la recepción como la trazabilidad completa de los mensajes clínicos.
 
-Implementación de un **servicio de integración robusto en Spring Boot** para la **recepción, procesamiento y auditoría de mensajes clínicos** en formato **HL7 v2.x** utilizando el protocolo **MLLP (Minimum Lower Layer Protocol)**.
+Se complementa con una capa de auditoría y trazabilidad implementada en Oracle mediante PL/SQL, utilizando procedimientos almacenados, funciones, vistas y triggers.
 
-Esta solución simula la **interacción bidireccional entre sistemas hospitalarios**, como pueden ser HIS, LIS o motores de integración como **Mirth Connect**.
+🧩 Funcionalidades Principales
+📥 Recepción de Mensajes HL7v2
+Escucha activa en un puerto TCP con protocolo MLLP.
 
-Se realiza auditoria y trazabilidad con PL/SQL en Oracle a través de procedimientos almacenados, vistas, funciones y triggers.
+Compatible con múltiples tipos de mensajes: ADT, ORM, ORU, entre otros.
 
----
+⚙️ Procesamiento del Mensaje
+Validación estructural básica de los segmentos y campos del mensaje HL7v2.
 
-## Funcionalidades Principales
+Aplicación de reglas de negocio para determinar el estado del mensaje:
 
-- 📥 **Recepción de Mensajes HL7v2**
-  - Escucha activa en un puerto TCP usando protocolo MLLP.
-  - Compatible con mensajes ADT, ORM, ORU, entre otros.
+AA (Application Accept): Procesamiento exitoso.
 
-- ⚙️ **Procesamiento del Mensaje**
-  - Validación estructural básica del mensaje HL7v2.
-  - Aplicación de reglas de negocio para decidir el estado del mensaje:
-    - `AA` (Application Accept) → Éxito
-    - `AE` (Application Error) → Error de procesamiento
-    - `AR` (Application Reject) → Mensaje rechazado
+AE (Application Error): Error durante el procesamiento.
 
-- 📤 **Generación de Mensaje ACK**
-  - Respuesta estándar HL7 ACK al sistema origen.
-  - Contenido refleja el resultado del procesamiento.
+AR (Application Reject): Mensaje rechazado.
 
-- 🗄️ **Auditoría y Almacenamiento en PL/SQL**
-  - Persistencia de cada mensaje HL7 recibido.
-  - Estado (`AA`, `AE`, `AR`), timestamp y detalle de errores si existen para una mayor auditoría.
-  - Base de datos relacional Oracle donde se crean procedimientos, triggers y vistas.
+📤 Generación de Mensaje ACK
+Respuesta ACK estándar enviada al sistema origen.
+
+El contenido del ACK refleja el resultado del procesamiento del mensaje recibido.
+
+🗄️ Auditoría y Persistencia (PL/SQL + Oracle)
+Almacenamiento de cada mensaje HL7 recibido con trazabilidad completa.
+
+Registro de:
+
+Contenido bruto (messageRaw),
+
+Origen (sender), destino (receiver),
+
+Tipo de mensaje (messageType),
+
+Estado (ackStatus: AA, AE, AR),
+
+Errores (ackError) si existen.
+
+Implementación de triggers, vistas y procedimientos almacenados para:
+
+Registro automático de errores en tabla de log (hl7_error_log).
+
+Generación de vistas para monitoreo en tiempo real.
+
+Posibilidad de extracción y análisis de datos vía funciones PL/SQL.
+
+Base de datos Oracle para entornos reales, y H2 en memoria para pruebas locales y desarrollo ágil (MVP).
+
+
 
 ---
 
